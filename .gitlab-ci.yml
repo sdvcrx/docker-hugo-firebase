@@ -6,20 +6,21 @@ services:
   - docker:dind
 
 before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
 
 build-master:
   stage: build
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker build --pull -t "sdvcrx/hugo-firebase" .
+    - docker push "sdvcrx/hugo-firebase"
   only:
     - master
 
 build:
   stage: build
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
-  except:
-    - master
+    - docker build --pull -t "sdvcrx/hugo-firebase:$CI_COMMIT_TAG" -t "sdvcrx/hugo-firebase" .
+    - docker push "sdvcrx/hugo-firebase:$CI_COMMIT_TAG"
+    - docker push "sdvcrx/hugo-firebase"
+  only:
+    - tags
