@@ -24,3 +24,25 @@ build:
     - docker push "sdvcrx/hugo-firebase"
   only:
     - tags
+
+check-update:
+  stage: build
+  script:
+    - apk update && apk add jq openssh-client
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
+    - git config --global user.email "memory.silentvoyage@gmail.com"
+    - git config --global user.name "sdvcrx-bot"
+    - mkdir -p ~/.ssh
+    - ssh-keyscan my-gitlab-machine >> ~/.ssh/known_hosts
+    - git clone git@gitlab.com:sdvcrx/docker-hugo-firebase.git
+    - cd docker-hugo-firebase
+    - DOCKER_TAG=$(grep 'ENV' Dockerfile | cut -d ' ' -f 3)
+    - LATEST_TAG=$(curl --silent "https://api.github.com/repos/gohugoio/hugo/tags" | jq -r '.[0].name' | cut -d 'v' -f 2)
+    - if [ "$DOCKER_TAG" = "$LATEST_TAG" ]; then echo "latest tag is same: $DOCKER_TAG" && exit 0; fi
+    - sed -i "s|$DOCKER_TAG|$LATEST_TAG|g" Dockerfile
+    - git add Dockerfile && git commit -m "Update hugo to v$LATEST_TAG"
+    - git tag -a "$LATEST_TAG" -m "$LATEST_TAG"
+    - git push && git push --tags
+  only:
+    - schedules
