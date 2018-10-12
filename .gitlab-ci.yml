@@ -30,7 +30,7 @@ check-update:
   script:
     - apk update && apk add jq openssh-client
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
+    - echo "$GIT_SSH_PRIV_KEY" | ssh-add -
     - git config --global user.email "memory.silentvoyage@gmail.com"
     - git config --global user.name "sdvcrx-bot"
     - mkdir -p ~/.ssh
