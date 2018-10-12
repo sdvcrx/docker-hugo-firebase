@@ -31,10 +31,10 @@ check-update:
     - apk update && apk add jq openssh-client
     - eval $(ssh-agent -s)
     - echo "$GIT_SSH_PRIV_KEY"
-    - echo "$GIT_SSH_PRIV_KEY" | ssh-add -
+    - echo "$GIT_SSH_PRIV_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - git config --global user.email "memory.silentvoyage@gmail.com"
     - git config --global user.name "sdvcrx-bot"
-    - mkdir -p ~/.ssh
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     - git clone git@gitlab.com:sdvcrx/docker-hugo-firebase.git
     - cd docker-hugo-firebase
