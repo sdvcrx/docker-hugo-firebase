@@ -28,7 +28,7 @@ build:
 check-update:
   stage: build
   script:
-    - apk update && apk add jq openssh-client
+    - apk update && apk add jq openssh-client git sed
     - eval $(ssh-agent -s)
     - echo "$GIT_SSH_PRIV_KEY"
     - echo "$GIT_SSH_PRIV_KEY" | tr -d '\r' | ssh-add - > /dev/null
