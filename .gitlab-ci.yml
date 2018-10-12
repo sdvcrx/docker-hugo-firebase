@@ -30,11 +30,12 @@ check-update:
   script:
     - apk update && apk add jq openssh-client
     - eval $(ssh-agent -s)
+    - echo "$GIT_SSH_PRIV_KEY"
     - echo "$GIT_SSH_PRIV_KEY" | ssh-add -
     - git config --global user.email "memory.silentvoyage@gmail.com"
     - git config --global user.name "sdvcrx-bot"
     - mkdir -p ~/.ssh
-    - ssh-keyscan my-gitlab-machine >> ~/.ssh/known_hosts
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     - git clone git@gitlab.com:sdvcrx/docker-hugo-firebase.git
     - cd docker-hugo-firebase
     - DOCKER_TAG=$(grep 'ENV' Dockerfile | cut -d ' ' -f 3)
