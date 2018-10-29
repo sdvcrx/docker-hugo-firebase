@@ -2,7 +2,7 @@ FROM node:8-alpine
 
 MAINTAINER me@sdvcrx.com
 
-ENV HUGO_VERSION 0.49.2
+ENV HUGO_VERSION 0.50
 
 ADD https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz /tmp/hugo.tar.gz
 
