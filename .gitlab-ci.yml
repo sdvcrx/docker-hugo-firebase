@@ -14,7 +14,8 @@ build-master:
     - docker build --pull -t "sdvcrx/hugo-firebase" .
     - docker push "sdvcrx/hugo-firebase"
   only:
-    - master
+    changes:
+      - Dockerfile
 
 build:
   stage: build
