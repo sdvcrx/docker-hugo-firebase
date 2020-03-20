@@ -5,7 +5,7 @@ ENV HUGO_VERSION 0.67.1
 WORKDIR /app
 
 ADD https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz /tmp/hugo.tar.gz
-ADD https://firebase.tools/bin/linux/latest /usr/bin/firebase
+ADD https://firebase.tools/bin/linux/latest /app/firebase
 
 RUN install_packages binutils && \
   chmod +x /app/firebase && \
