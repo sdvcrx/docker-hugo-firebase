@@ -15,7 +15,7 @@ RUN install_packages binutils && \
   rm -rf /tmp/
 
 
-FROM gcr.io/distroless/cc-debian10
+FROM gcr.io/distroless/cc-debian10:debug
 
 LABEL maintainer="me@sdvcrx.com"
 
