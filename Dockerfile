@@ -15,9 +15,11 @@ RUN install_packages binutils && \
   rm -rf /tmp/
 
 
-FROM gcr.io/distroless/cc-debian10:debug
+FROM bitnami/minideb
 
 LABEL maintainer="me@sdvcrx.com"
 
 COPY --from=build /app/firebase /usr/bin/
 COPY --from=build /app/hugo /usr/bin/
+
+RUN install_packages ca-certificates
