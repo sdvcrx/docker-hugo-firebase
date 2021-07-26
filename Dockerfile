@@ -9,7 +9,7 @@ ADD https://firebase.tools/bin/linux/latest /usr/bin/firebase
 
 WORKDIR /app
 
-RUN install_packages ca-certificates && \
+RUN install_packages ca-certificates curl && \
   chmod +x /usr/bin/firebase && \
   tar xvzf /tmp/hugo.tar.gz -C /tmp/ && \
   mv /tmp/hugo /usr/bin && \
