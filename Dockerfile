@@ -1,4 +1,4 @@
-FROM bitnami/minideb
+FROM bitnami/minideb:bullseye
 
 LABEL maintainer="me@sdvcrx.com"
 
