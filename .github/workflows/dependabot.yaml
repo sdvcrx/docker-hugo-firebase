@@ -1,0 +1,8 @@
+# https://github.com/marketplace/actions/build-and-push-docker-images#keep-up-to-date-with-github-dependabot
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
