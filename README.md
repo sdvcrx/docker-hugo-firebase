@@ -1,6 +1,7 @@
 # docker-hugo-firebase
 
 [![Docker Image CI](https://github.com/sdvcrx/docker-hugo-firebase/actions/workflows/docker-image.yaml/badge.svg)](https://github.com/sdvcrx/docker-hugo-firebase/actions/workflows/docker-image.yaml)
+![Docker Image Version](https://img.shields.io/github/v/tag/sdvcrx/docker-hugo-firebase)
 ![Docker Image Size](https://img.shields.io/docker/image-size/sdvcrx/hugo-firebase?sort=date)
 ![Docker Image Pulls](https://img.shields.io/docker/pulls/sdvcrx/hugo-firebase)
 
