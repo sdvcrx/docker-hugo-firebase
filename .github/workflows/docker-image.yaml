@@ -2,6 +2,7 @@ name: Docker Image CI
 
 on:
   push:
+    tags: [ '*.*.*' ]
     branches: [ master ]
 
 jobs:
@@ -27,7 +28,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push tag
+        if: ${{ github.ref_type == 'tag' }}
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          pull: true
+          push: true
+          tags: |
+            sdvcrx/hugo-firebase:${{ github.ref_name }}
+            ghcr.io/sdvcrx/hugo-firebase:${{ github.ref_name }}
+          platforms: linux/amd64
+
+      - name: Build and push latest
+        if: ${{ github.ref_type == 'branch' }}
         id: docker_build
         uses: docker/build-push-action@v2
         with:
