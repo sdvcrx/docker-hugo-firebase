@@ -8,22 +8,21 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container:
-      image: alpine
     steps:
-      - name: Install basic deps
-        run: |
-          apk update && apk add jq openssh-client git sed curl
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.SSH_DEPLOY_PRIVATE_KEY }}
+
       - name: Setup ssh agent
         uses: webfactory/ssh-agent@v0.5.4
         with:
-            ssh-private-key: ${{ secrets.SSH_DEPLOY_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_DEPLOY_PRIVATE_KEY }}
+
       - name: Check update
         run: |
           git config --global user.email "memory.silentvoyage@gmail.com"
           git config --global user.name "sdvcrx-bot"
-          git clone git@github.com:$GITHUB_REPOSITORY.git repo
-          cd repo
           DOCKER_TAG=$(grep 'ENV' Dockerfile | cut -d ' ' -f 3)
           LATEST_TAG=$(curl --silent "https://api.github.com/repos/gohugoio/hugo/tags" | jq -r '.[0].name' | cut -d 'v' -f 2)
           if [ "$DOCKER_TAG" = "$LATEST_TAG" ]; then echo "latest tag is same => $DOCKER_TAG" && exit 0; fi
@@ -31,5 +30,3 @@ jobs:
           git add Dockerfile && git commit -m "Update hugo to v$LATEST_TAG"
           git tag -a "$LATEST_TAG" -m "$LATEST_TAG"
           git push && git push --tags
-        env:
-          GIT_SSH_PRIV_KEY: ${{ secrets.SSH_DEPLOY_PRIVATE_KEY }}
