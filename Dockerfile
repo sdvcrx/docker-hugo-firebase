@@ -1,6 +1,4 @@
-FROM bitnami/minideb:bullseye
-
-LABEL maintainer="me@sdvcrx.com"
+FROM bitnami/minideb:bullseye AS build
 
 ENV HUGO_VERSION 0.92.1
 
@@ -9,8 +7,16 @@ ADD https://firebase.tools/bin/linux/latest /usr/bin/firebase
 
 WORKDIR /app
 
-RUN install_packages ca-certificates curl && \
+RUN tar xvzf /tmp/hugo.tar.gz -C /tmp/ && \
   chmod +x /usr/bin/firebase && \
-  tar xvzf /tmp/hugo.tar.gz -C /tmp/ && \
-  mv /tmp/hugo /usr/bin && \
-  rm -rf /tmp/
+  mv /tmp/hugo /usr/bin
+
+# ---
+FROM bitnami/minideb:bullseye
+LABEL maintainer="me@sdvcrx.com"
+
+COPY --from=build /usr/bin/firebase /usr/bin/firebase
+COPY --from=build /usr/bin/hugo /usr/bin/hugo
+
+WORKDIR /app
+RUN install_packages ca-certificates curl
