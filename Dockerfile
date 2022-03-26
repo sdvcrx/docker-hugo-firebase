@@ -1,6 +1,6 @@
 FROM bitnami/minideb:bullseye AS build
 
-ENV HUGO_VERSION 0.95.0
+ENV HUGO_VERSION 0.96.0
 
 ADD https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz /tmp/hugo.tar.gz
 ADD https://firebase.tools/bin/linux/latest /usr/bin/firebase
