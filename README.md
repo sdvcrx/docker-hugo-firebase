@@ -7,8 +7,6 @@
 
 Docker image for deploying [hugo](https://gohugo.io/) sites to [Firebase](https://firebase.google.com/)
 
-Based on [bitnami/minideb](https://github.com/bitnami/minideb) image.
-
 ## Usage
 
 Pull docker image from [Docker Hub](https://hub.docker.com/r/sdvcrx/hugo-firebase)

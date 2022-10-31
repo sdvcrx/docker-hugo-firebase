@@ -39,7 +39,9 @@ jobs:
           tags: |
             sdvcrx/hugo-firebase:${{ github.ref_name }}
             ghcr.io/sdvcrx/hugo-firebase:${{ github.ref_name }}
-          platforms: linux/amd64
+          platforms: |
+            linux/amd64
+            linux/arm64
 
       - name: Build and push latest
         if: ${{ github.ref_type == 'branch' }}
@@ -51,4 +53,6 @@ jobs:
           tags: |
             sdvcrx/hugo-firebase:latest
             ghcr.io/sdvcrx/hugo-firebase:latest
-          platforms: linux/amd64
+          platforms: |
+            linux/amd64
+            linux/arm64
