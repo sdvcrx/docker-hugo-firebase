@@ -42,7 +42,7 @@ check-update:
     - git clone git@gitlab.com:sdvcrx/docker-hugo-firebase.git
     - cd docker-hugo-firebase
     - DOCKER_TAG=$(grep 'ENV' Dockerfile | cut -d ' ' -f 3)
-    - LATEST_TAG=$(curl --silent "https://api.github.com/repos/gohugoio/hugo/tags" | jq -r '.[0].name' | cut -d 'v' -f 2)
+    - LATEST_TAG=$(curl -m 10 --retry 5 --silent "https://api.github.com/repos/gohugoio/hugo/tags" | jq -r '.[0].name' | cut -d 'v' -f 2)
     - if [ "$DOCKER_TAG" = "$LATEST_TAG" ]; then echo "latest tag is same => $DOCKER_TAG" && exit 0; fi
     - sed -i "s|$DOCKER_TAG|$LATEST_TAG|g" Dockerfile
     - git add Dockerfile && git commit -m "Update hugo to v$LATEST_TAG"
