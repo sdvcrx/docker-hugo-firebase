@@ -1,4 +1,4 @@
-FROM bitnami/minideb:bullseye AS build
+FROM bitnami/minideb AS build
 
 ENV HUGO_VERSION 0.116.1
 ARG TARGETARCH
