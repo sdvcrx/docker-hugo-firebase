@@ -1,6 +1,6 @@
 FROM bitnami/minideb AS build
 
-ENV HUGO_VERSION 0.154.1
+ENV HUGO_VERSION 0.154.2
 ARG TARGETARCH
 
 ADD https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-${TARGETARCH}.tar.gz /tmp/hugo.tar.gz
