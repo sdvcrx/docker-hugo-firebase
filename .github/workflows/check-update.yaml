@@ -20,13 +20,23 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_DEPLOY_PRIVATE_KEY }}
 
       - name: Check update
+        shell: bash
         run: |
+          set -euo pipefail
           git config --global user.email "memory.silentvoyage@gmail.com"
           git config --global user.name "sdvcrx-bot"
-          DOCKER_TAG=$(grep 'ENV' Dockerfile | cut -d ' ' -f 3)
-          LATEST_TAG=$(curl -m 10 --retry 5 --silent "https://api.github.com/repos/gohugoio/hugo/releases" | jq -r '.[0].tag_name' | cut -d 'v' -f 2)
+          DOCKER_TAG=$(sed -n 's/^ENV HUGO_VERSION //p' Dockerfile)
+          LATEST_TAG=$(curl -fSL -m 10 --retry 5 "https://api.github.com/repos/gohugoio/hugo/releases/latest" | jq -er '.tag_name | ltrimstr("v")')
+          [[ "$DOCKER_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          [[ "$LATEST_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
           if [ "$DOCKER_TAG" = "$LATEST_TAG" ]; then echo "latest tag is same => $DOCKER_TAG" && exit 0; fi
-          sed -i "s|$DOCKER_TAG|$LATEST_TAG|g" Dockerfile
-          git add Dockerfile && git commit -m "Update hugo to v$LATEST_TAG"
+          SASS_VERSION=$(sed -n 's/^ARG DART_SASS_VERSION=//p' Dockerfile)
+          LATEST_SASS_VERSION=$(curl -fSL -m 10 --retry 5 "https://api.github.com/repos/sass/dart-sass/releases/latest" | jq -er '.tag_name | ltrimstr("v")')
+          [[ "$SASS_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          [[ "$LATEST_SASS_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          echo "Updating Hugo $DOCKER_TAG -> $LATEST_TAG; Dart Sass $SASS_VERSION -> $LATEST_SASS_VERSION"
+          sed -i "s|^ENV HUGO_VERSION .*|ENV HUGO_VERSION $LATEST_TAG|" Dockerfile
+          sed -i "s|^ARG DART_SASS_VERSION=.*|ARG DART_SASS_VERSION=$LATEST_SASS_VERSION|" Dockerfile
+          git add Dockerfile && git commit -m "Update hugo to v$LATEST_TAG and Dart Sass to $LATEST_SASS_VERSION"
           git tag -a "$LATEST_TAG" -m "$LATEST_TAG"
           git push && git push --tags
