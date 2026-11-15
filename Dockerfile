@@ -26,14 +26,14 @@ RUN tar xzf /tmp/dart-sass.tar.gz -C /usr/lib
 FROM node:lts-slim
 LABEL maintainer="me@sdvcrx.com"
 
-COPY --from=hugo /usr/bin/hugo /usr/bin/hugo
-COPY --from=sass /usr/lib/dart-sass /usr/lib/dart-sass
-
 WORKDIR /app
 RUN apt-get update \
       && apt-get install -y ca-certificates curl \
       && rm -rf /var/lib/apt/lists/* \
       && npm install -g firebase-tools \
       && ln -s /usr/lib/dart-sass/sass /usr/bin/sass
+
+COPY --from=hugo /usr/bin/hugo /usr/bin/hugo
+COPY --from=sass /usr/lib/dart-sass /usr/lib/dart-sass
 
 CMD ["hugo"]

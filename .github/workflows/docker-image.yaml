@@ -44,6 +44,8 @@ jobs:
         with:
           pull: true
           platforms: linux/${{ matrix.arch }}
+          cache-from: type=gha,version=2,scope=hugo-firebase-${{ matrix.arch }}
+          cache-to: type=gha,version=2,scope=hugo-firebase-${{ matrix.arch }},mode=max
           outputs: type=image,"name=sdvcrx/hugo-firebase,ghcr.io/sdvcrx/hugo-firebase",push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
