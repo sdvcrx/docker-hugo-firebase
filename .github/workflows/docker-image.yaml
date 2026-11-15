@@ -3,8 +3,7 @@ name: Docker Image CI
 on:
   push:
     tags: [ '*.*.*' ]
-    paths: [ 'Dockerfile', '.github/workflows/docker-image.yaml' ]
-    branches: [ master ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -99,8 +98,8 @@ jobs:
           REF_NAME: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          tag=latest
-          if [ "$REF_TYPE" = tag ]; then tag="$REF_NAME"; fi
+          tags=(latest)
+          if [ "$REF_TYPE" = tag ]; then tags+=("$REF_NAME"); fi
           shopt -s nullglob
           digests=(*)
           [ "${#digests[@]}" -eq 2 ]
@@ -110,6 +109,12 @@ jobs:
               [[ "$digest" =~ ^[0-9a-f]{64}$ ]]
               sources+=("$image@sha256:$digest")
             done
-            docker buildx imagetools create --tag "$image:$tag" "${sources[@]}"
-            docker buildx imagetools inspect "$image:$tag"
+            tag_args=()
+            for tag in "${tags[@]}"; do
+              tag_args+=(--tag "$image:$tag")
+            done
+            docker buildx imagetools create "${tag_args[@]}" "${sources[@]}"
+            for tag in "${tags[@]}"; do
+              docker buildx imagetools inspect "$image:$tag"
+            done
           done
