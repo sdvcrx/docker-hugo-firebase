@@ -1,0 +1,20 @@
+.github/workflows/docker-image.yaml
+  s_1d4b20a5ee61df::t_a3fbb1cd8bdbea 6,101-102,112-119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "11973d20f4c4e665d4ca2932506d28226c1641a6",
+  "prompts": {},
+  "logical_commit_id": "11973d20f4c4e665d4ca2932506d28226c1641a6",
+  "sessions": {
+    "s_1d4b20a5ee61df": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1dccb-307f-70a3-9239-c159385ea281",
+        "model": "unknown"
+      },
+      "human_author": "sdvcrx <memory.silentvoyage@gmail.com>"
+    }
+  }
+}
